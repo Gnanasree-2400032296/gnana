@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Issuance Management System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f6fa;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #1a3c55;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    header p {
+      margin: 5px 0 15px;
+      font-size: 14px;
+    }
+    .role-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .role-buttons button {
+      background-color: #1abc9c;
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .role-buttons button:hover {
+      background-color: #16a085;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .dashboard, .subpage {
+      background-color: white;
+      width: 60%;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .logout-btn, .nav-btn {
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px;
+      transition: 0.3s;
+    }
+    .logout-btn:hover, .nav-btn:hover {
+      background-color: #16a085;
+    }
+    .logout-btn {
+      background-color: #e74c3c;
+    }
+    .logout-btn:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Loan Issuance Management System</h1>
+  <p>Track payments, calculate interest, and manage loans easily</p>
+  <div class="role-buttons">
+    <button onclick="showLogin('admin')">Admin</button>
+    <button onclick="showLogin('lender')">Lender</button>
+    <button onclick="showLogin('borrower')">Borrower</button>
+    <button onclick="showLogin('analyst')">Financial Analyst</button>
+  </div>
+</header>
+
+<!-- Login Section -->
+<div id="login-section" class="container hidden">
+  <h2 id="login-title"></h2>
+  <input type="text" id="username" placeholder="Username"><br><br>
+  <input type="password" id="password" placeholder="Password"><br><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- Admin Dashboard -->
+<div id="admin-dashboard" class="dashboard hidden">
+  <h2>Admin Dashboard 🛠</h2>
+  <button class="nav-btn" onclick="openDashboard('lender')">Lender</button>
+  <button class="nav-btn" onclick="openDashboard('borrower')">Borrower</button>
+  <button class="nav-btn" onclick="openDashboard('analyst')">Financial Analyst</button>
+  <br><button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<!-- Lender Dashboard -->
+<div id="lender-dashboard" class="dashboard hidden">
+  <h2>Lender Dashboard 💰</h2>
+  <button class="nav-btn" onclick="openSubpage('create-loan')">Create Loan Offer</button>
+  <button class="nav-btn" onclick="openSubpage('track-repayments')">Track Repayments</button>
+  <button class="nav-btn" onclick="openSubpage('manage-borrowers')">Manage Borrowers</button>
+  <br><button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<!-- Lender Subpages -->
+<div id="create-loan" class="subpage hidden">
+  <h2>Create Loan Offer 💼</h2>
+  <form>
+    <input type="text" placeholder="Loan Type"><br><br>
+    <input type="number" placeholder="Interest Rate (%)"><br><br>
+    <input type="number" placeholder="Tenure (months)"><br><br>
+    <button class="nav-btn">Submit Offer</button>
+  </form>
+  <br><button class="nav-btn" onclick="openDashboard('lender')">⬅ Back</button>
+</div>
+
+<div id="track-repayments" class="subpage hidden">
+  <h2>Track Repayments 📅</h2>
+  <p>List of borrowers and repayment schedules will appear here.</p>
+  <br><button class="nav-btn" onclick="openDashboard('lender')">⬅ Back</button>
+</div>
+
+<div id="manage-borrowers" class="subpage hidden">
+  <h2>Manage Borrowers 👥</h2>
+  <p>View, update, and communicate with borrowers.</p>
+  <br><button class="nav-btn" onclick="openDashboard('lender')">⬅ Back</button>
+</div>
+
+<!-- Borrower Dashboard -->
+<div id="borrower-dashboard" class="dashboard hidden">
+  <h2>Borrower Dashboard 🙋</h2>
+  <button class="nav-btn" onclick="openSubpage('apply-loan')">Apply for Loan</button>
+  <button class="nav-btn" onclick="openSubpage('loan-details')">View Loan Details</button>
+  <button class="nav-btn" onclick="openSubpage('payment-history')">Track Payments</button>
+  <br><button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<!-- Borrower Subpages -->
+<div id="apply-loan" class="subpage hidden">
+  <h2>Apply for Loan 📝</h2>
+  <form>
+    <input type="text" placeholder="Select Loan Type"><br><br>
+    <input type="number" placeholder="Loan Amount"><br><br>
+    <button class="nav-btn">Submit Application</button>
+  </form>
+  <br><button class="nav-btn" onclick="openDashboard('borrower')">⬅ Back</button>
+</div>
+
+<div id="loan-details" class="subpage hidden">
+  <h2>Loan Details 💳</h2>
+  <p>Display current loan status, interest rate, repayment schedule, and balance.</p>
+  <br><button class="nav-btn" onclick="openDashboard('borrower')">⬅ Back</button>
+</div>
+
+<div id="payment-history" class="subpage hidden">
+  <h2>Repayment History 💵</h2>
+  <p>Show payment records and due dates.</p>
+  <br><button class="nav-btn" onclick="openDashboard('borrower')">⬅ Back</button>
+</div>
+
+<!-- Analyst Dashboard -->
+<div id="analyst-dashboard" class="dashboard hidden">
+  <h2>Financial Analyst Dashboard 📊</h2>
+  <button class="nav-btn" onclick="openSubpage('analyze-data')">Analyze Loan Data</button>
+  <button class="nav-btn" onclick="openSubpage('assess-risk')">Assess Risks</button>
+  <button class="nav-btn" onclick="openSubpage('generate-report')">Generate Reports</button>
+  <br><button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<!-- Analyst Subpages -->
+<div id="analyze-data" class="subpage hidden">
+  <h2>Analyze Loan Data 📈</h2>
+  <p>Visualizations and tables of borrower/lender data.</p>
+  <br><button class="nav-btn" onclick="openDashboard('analyst')">⬅ Back</button>
+</div>
+
+<div id="assess-risk" class="subpage hidden">
+  <h2>Assess Risk ⚠️</h2>
+  <p>Evaluate default probability and loan risk score.</p>
+  <br><button class="nav-btn" onclick="openDashboard('analyst')">⬅ Back</button>
+</div>
+
+<div id="generate-report" class="subpage hidden">
+  <h2>Generate Financial Report 📄</h2>
+  <p>Downloadable reports and analysis summaries.</p>
+  <br><button class="nav-btn" onclick="openDashboard('analyst')">⬅ Back</button>
+</div>
+
+<script>
+  const users = {
+    admin: { username: "admin", password: "admin123" },
+    lender: { username: "lender", password: "lender123" },
+    borrower: { username: "borrower", password: "borrower123" },
+    analyst: { username: "analyst", password: "analyst123" }
+  };
+
+  let currentRole = "";
+
+  function showLogin(role) {
+    currentRole = role;
+    document.getElementById("login-section").classList.remove("hidden");
+    document.getElementById("login-title").textContent = `${role.charAt(0).toUpperCase() + role.slice(1)} Login`;
+  }
+
+  function login() {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (username === users[currentRole].username && password === users[currentRole].password) {
+      document.getElementById("login-section").classList.add("hidden");
+      openDashboard(currentRole);
+    } else {
+      alert("Invalid username or password!");
+    }
+  }
+
+  function openDashboard(role) {
+    document.querySelectorAll('.dashboard, .subpage').forEach(d => d.classList.add('hidden'));
+    document.getElementById(`${role}-dashboard`).classList.remove('hidden');
+  }
+
+  function openSubpage(pageId) {
+    document.querySelectorAll('.dashboard, .subpage').forEach(d => d.classList.add('hidden'));
+    document.getElementById(pageId).classList.remove('hidden');
+  }
+
+  function logout() {
+    document.querySelectorAll('.dashboard, .subpage').forEach(d => d.classList.add('hidden'));
+    document.getElementById("login-section").classList.add("hidden");
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+  }
+</script>
+
+</body>
+</html>
